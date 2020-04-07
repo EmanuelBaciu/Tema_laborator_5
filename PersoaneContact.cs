@@ -1,47 +1,32 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AplicatieTipAgenda
 {
-    
-    public enum Grup
-    {
-        Prieteni=0,
-        Serviciu=1,
-        Familie=2,
-    }
+
+
     /// <summary>
     /// Persoanele de contact din agenda
     /// </summary>
     /// clasa persoanecontact cu parametri auto-implemented
-   public class PersoaneContact
+    public class PersoaneContact
     {
-        
-        public const int MARE = 1;
-        public const int EGAL = 0;
-        public const int MIC = 1;
-
-        public Grup grup;
-        public Grup Grup { get { return grup; } set { grup = value; } }
-        
-        public string nume { set; get; } 
-        public string prenume { set; get; }
-        public string numarTelefon { set; get; }
-        public string adresaEmail { set; get; }
+        public Grup GRUP { get; set; }
+        public string Nume { set; get; } 
+        public string Prenume { set; get; }
+        public double NumarTelefon { set; get; }
+        public string AdresaEmail { set; get; }
 
         public DateTime DataNasterii { set; get; }
-        public string NumeleComplet { get { return nume + "-" + prenume; } }
-
-
+        public string NumeleComplet { get { return Nume + " " + Prenume; } }
+        
+        
         public PersoaneContact()
         {
-            nume = string.Empty;
-            prenume = string.Empty;
-            numarTelefon = string.Empty;
-            adresaEmail = string.Empty;
+            Nume = string.Empty;
+            Prenume = string.Empty;
+            NumarTelefon = 0;
+            AdresaEmail = string.Empty;
+            GRUP = Grup.NonGrup;
             
 
             
@@ -53,13 +38,13 @@ namespace AplicatieTipAgenda
         /// <param name="numePersoana"></param>
         /// <param name="nrTel"></param>
         /// <param name="e_mail"></param>
-        public PersoaneContact(string numePersoana, string prenumePers, string nrTel, string e_mail, Grup _grup)
+        public PersoaneContact(string numePersoana, string prenumePers, double nrTel, string e_mail, int _grup)
        {
-            nume = numePersoana;
-            prenume = prenumePers;
-          numarTelefon = nrTel;
-            adresaEmail = e_mail;
-            grup =(Grup) _grup;
+            this.Nume = numePersoana;
+            this.Prenume = prenumePers;
+          this.NumarTelefon = nrTel;
+            this.AdresaEmail = e_mail;
+            this.GRUP = (Grup)_grup;
             
 
             
@@ -72,46 +57,44 @@ namespace AplicatieTipAgenda
         public PersoaneContact(string pers1)
         {
             string[] buff = pers1.Split();
-            nume = buff[0];
-            prenume = buff[1];
-            numarTelefon = buff[2];
-            adresaEmail = buff[3];
-            grup = (Grup)Convert.ToInt32(buff[4]);
-            Enum.TryParse(buff[5], out grup);
+            Nume = buff[0];
+            Prenume = buff[1];
+            NumarTelefon =Convert.ToInt32( buff[2]);
+            AdresaEmail = buff[3];
+            GRUP = (Grup)Convert.ToInt32(buff[4]);
+            //Enum.TryParse(buff[5], out GRUP);
 
         }
         
 
-        public static int optGrup()
-        {
-            Console.WriteLine("Alege o optiune: ");
-            Console.WriteLine("0. Prieteni\n"+
-                              "2. Serviciu\n"+
-                              "3. Familie");
-            int opt = Convert.ToInt32(Console.ReadLine());
-            return opt;
-        }
+       
+
 
         // Afisare date despre contact
         public string ConversieLaSir()
         {
-            string buff = "";
-            buff +=  "Persoana de contact are numele " + nume + "-" + prenume + " cu numarul de telefon: " + numarTelefon + "  adresa de e-mail: " + adresaEmail + " din grupul " + grup;
-            return buff;
+            
+           return string.Format("Persoana de contact are numele " + Nume + " " + Prenume + " cu numarul de telefon: " + NumarTelefon + "  adresa de e-mail: " + AdresaEmail + " din grupul " + GRUP);
+          
         }
         public string nastere()
         {
             return "Data nasterii: " + DataNasterii;
             
         }
-        public int Compara(PersoaneContact _persCon)
+       public bool Compara(PersoaneContact c)
         {
-            return this.NumeleComplet.CompareTo(_persCon.NumeleComplet);
+            if(this.NumeleComplet.Length > c.NumeleComplet.Length)
+            {
+                return true;
+            }
+            return false;
+                
         }
         
         public string ToString()
         {
-            return nume + " " + prenume + " face parte din grupul: " + Grup;
+            return Nume + " " + Prenume + " face parte din grupul: " + GRUP;
         }
 
 
